@@ -55,13 +55,13 @@ Registros, decisiones y textos completos se guardan solo en el navegador (Indexe
 
 ## Autoría
 
-Fernando Borrás Rocher (Universidad Miguel Hernández de Elche).
+Fernando Borrás Rocher y Adriana López-Pineda (Universidad Miguel Hernández de Elche).
 
-ORCID: Fernando Borrás Rocher [0000-0002-5519-4573](https://orcid.org/0000-0002-5519-4573)
+ORCID: Fernando Borrás Rocher [0000-0002-5519-4573](https://orcid.org/0000-0002-5519-4573) · Adriana López-Pineda [0000-0002-2117-0178](https://orcid.org/0000-0002-2117-0178)
 
 ## Cómo citar
 
-Borrás Rocher, F. (2026). *PRISMIA* (v1.0.0) [Software]. DOI: [10.5281/zenodo.23144807](https://doi.org/10.5281/zenodo.23144807)
+Borrás Rocher, F. y López-Pineda, A. (2026). *PRISMIA* (v1.0.1) [Software]. DOI: [10.5281/zenodo.23144807](https://doi.org/10.5281/zenodo.23144807)
 
 ## Licencia
 
