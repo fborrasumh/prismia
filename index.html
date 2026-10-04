@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0F2237">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data: blob:; media-src blob: data:; connect-src https://api.openai.com https://generativelanguage.googleapis.com https://api.anthropic.com https://eutils.ncbi.nlm.nih.gov https://api.openalex.org https://www.ebi.ac.uk https://api.unpaywall.org; worker-src blob: https://cdnjs.cloudflare.com; base-uri 'none'; form-action 'none'">
-<meta name="author" content="Fernando Borrás Rocher">
+<meta name="author" content="Fernando Borrás Rocher; Adriana López-Pineda">
 <meta name="description" content="Revisión sistemática con tres revisores de IA de proveedores distintos">
 <title>PRISMIA · Revisión sistemática con tres revisores de IA de proveedores distintos</title><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -477,7 +477,8 @@ table{border-collapse:collapse;width:100%;font-size:13.8px}th{background:var(--p
     <div class="actions"><button class="btn btn-primary btn-big" id="btnStart" type="button"><svg class="i"><use href="#i-play"/></svg><span data-i="start">Empezar</span></button><button class="btn btn-ghost btn-big" id="btnEjemplo" type="button"><svg class="i"><use href="#i-eye"/></svg><span data-i="example">Ver un ejemplo</span></button></div>
     <p class="fa-inicio" id="inicioProj"></p>
     <div class="fa-autores"><span class="fa-autores-cap" data-i="by"></span>
-      <div class="fa-autor"><span class="fa-av" style="--c:#E4572E">FB</span><div><b>Fernando Borrás Rocher</b><small>Universidad Miguel Hernández de Elche</small><a class="fa-orcid" href="https://orcid.org/0000-0002-5519-4573" target="_blank" rel="noopener">ORCID 0000-0002-5519-4573</a></div></div>
+      <div class="fa-autor"><span class="fa-av" style="--c:#E4572E">FB</span><div><b>Fernando Borrás Rocher</b><small>Universidad Miguel Hernández de Elche</small><a class="fa-orcid" href="https://orcid.org/0000-0002-5519-4573" target="_blank" rel="noopener">ORCID 0000-0002-5519-4573</a></div></div><span class="fa-x">×</span>
+      <div class="fa-autor"><span class="fa-av" style="--c:#0E8C7A">AL</span><div><b>Adriana López-Pineda</b><small>Universidad Miguel Hernández de Elche</small><a class="fa-orcid" href="https://orcid.org/0000-0002-2117-0178" target="_blank" rel="noopener">ORCID 0000-0002-2117-0178</a></div></div>
       </div>
   </div>
   <h2 class="sec-title" data-i="how">Cómo funciona</h2>
@@ -596,7 +597,7 @@ table{border-collapse:collapse;width:100%;font-size:13.8px}th{background:var(--p
 
 <div class="pi-run" id="runbar" role="status" aria-live="polite"><div class="pi-run-in"><div class="pi-run-msg" id="runMsg"></div><div class="pi-run-bar"><i id="runPct"></i></div><button class="btn btn-ghost btn-sm" id="runStop" type="button" data-i="stop"></button></div></div>
 
-<footer class="fa-foot"><hr><p><b>PRISMIA</b> · Fernando Borrás Rocher · Universidad Miguel Hernández de Elche. <span data-i="foot"></span></p></footer>
+<footer class="fa-foot"><hr><p><b>PRISMIA</b> · Fernando Borrás Rocher y Adriana López-Pineda · Universidad Miguel Hernández de Elche. <span data-i="foot"></span></p></footer>
 <div class="bottomnav"><div class="bn-in"><button class="btn btn-ghost" id="navBack" type="button"><svg class="i"><use href="#i-left"/></svg><span data-i="back">Atrás</span></button><div class="bn-hint" id="navHint"></div><button class="btn btn-primary" id="navNext" type="button"><span id="navNextTxt">Siguiente</span><svg class="i"><use href="#i-right"/></svg></button></div></div>
 
 <div class="modal" id="mEnvio" role="dialog" aria-modal="true" aria-labelledby="mEnT"><div class="modal-box"><div class="modal-head"><h2 id="mEnT" data-i="m.title"></h2><button type="button" data-close data-i="close"></button></div><div class="modal-body"><div id="envioInfo"></div><pre class="fa-pre" id="envioTxt"></pre><label class="fa-chk" style="margin:12px 0"><input type="checkbox" id="envioOk"> <span data-i="m.ok"></span></label><div class="actions"><button class="btn btn-primary" id="envioSi" type="button" disabled data-i="m.go"></button><button class="btn btn-ghost" id="envioNo" type="button" data-i="cancel"></button></div></div></div></div>
@@ -1014,11 +1015,7 @@ const D = {
 "Showing {0} of {1}.",
 "A mostrar {0} de {1}."
 ],
-"by": [
-"Realizada por",
-"Made by",
-"Realizada por"
-],
+"by": ["Autoría", "Authors", "Autoria"],
 "foot": [
 "Herramienta de apoyo a la investigación: la IA puede equivocarse y ninguna decisión pasa por revisión humana salvo que la hagas tú. Tus datos se guardan solo en este navegador.",
 "Research support tool: the AI can be wrong and no decision goes through human review unless you do it. Your data stay in this browser only.",
@@ -3448,7 +3445,7 @@ $('exWord').onclick = async () => {
   try { dl('prismia_informe.docx', await wordDeMarkdown(md, {titulo: 'PRISMIA', subtitulo: new Date().toLocaleDateString(), pie: t('x.wfoot')})); } catch (e) { toast(e.message, 7000); }
 };
 $('exProj').onclick = () => {
-  const o = JSON.parse(JSON.stringify(S)); o.software = 'PRISMIA 1.0.0'; if ($('exTexts').checked) o.texts = TEXTS;
+  const o = JSON.parse(JSON.stringify(S)); o.software = 'PRISMIA 1.0.1'; if ($('exTexts').checked) o.texts = TEXTS;
   dl('prismia_proyecto.json', JSON.stringify(o), 'application/json');
 };
 $('impProj').onchange = async e => {
