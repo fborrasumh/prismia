@@ -4,6 +4,8 @@ Revisión sistemática con tres revisores de IA de proveedores distintos. Aplica
 
 **Usar la app:** https://fborrasumh.github.io/prismia/
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23144807.svg)](https://doi.org/10.5281/zenodo.23144807)
+
 ## Qué hace
 
 - **Registros.** Busca en PubMed y OpenAlex o importa exportaciones RIS y CSV (PubMed, Scopus, Web of Science). Detecta duplicados por DOI, PMID y título normalizado.
@@ -59,7 +61,7 @@ ORCID: Fernando Borrás Rocher [0000-0002-5519-4573](https://orcid.org/0000-0002
 
 ## Cómo citar
 
-Borrás Rocher, F. (2026). *PRISMIA* (v1.0.0) [Software]. (DOI en trámite)
+Borrás Rocher, F. (2026). *PRISMIA* (v1.0.0) [Software]. DOI: [10.5281/zenodo.23144807](https://doi.org/10.5281/zenodo.23144807)
 
 ## Licencia
 
