@@ -12,8 +12,8 @@ authors:
     affiliation: "Universidad Miguel Hernández de Elche"
     orcid: "https://orcid.org/0000-0002-2117-0178"
 doi: "10.5281/zenodo.23144807"
-version: "1.0.1"
-date-released: "2026-10-04"
+version: "2.0.0"
+date-released: "2026-10-31"
 url: "https://fborrasumh.github.io/prismia/"
 repository-code: "https://github.com/fborrasumh/prismia"
 license: MIT
