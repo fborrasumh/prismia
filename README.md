@@ -15,6 +15,10 @@ Revisión sistemática con tres revisores de IA de proveedores distintos. Aplica
 - **Riesgo de sesgo.** RoB 2, ROBINS-I, QUADAS-2 y Newcastle-Ottawa, elegidas según el diseño extraído (se puede cambiar por estudio). La IA juzga los dominios; el juicio global se calcula en el código con las reglas de cada herramienta.
 - **Informe.** Diagrama de flujo PRISMA 2020 (SVG y PNG), semáforo de riesgo de sesgo, texto de métodos y declaración de uso de IA generados a partir de lo que realmente ocurrió, informe completo en Word (pregunta, métodos, diagrama, características de los estudios, sesgo, excluidos con motivo, verificación humana y uso de IA), tablas en CSV, Excel y RIS, lista PRISMA 2020 prerrellenada y un **paquete de reproducibilidad** en ZIP con todo lo anterior, los prompts usados y el proyecto.
 
+## Novedades de la versión 2.0.1
+
+- **Búsqueda en PubMed completa**: se leen también los documentos de NCBI Bookshelf (informes de agencias como NIHR o AHRQ), que PubMed cuenta pero que la 2.0.0 descartaba sin avisar; por eso algunas búsquedas daban un registro menos que en la web de PubMed. Si un PMID no se puede leer, ahora se indica en el registro de actividad.
+
 ## Novedades de la versión 2.0
 
 - **Varios proyectos** en el mismo navegador (Inicio → Mis proyectos): abrir, renombrar, duplicar para probar otros modelos, exportar, copias de seguridad automáticas tras cada fase y papelera de 30 días. Importar un proyecto siempre crea uno nuevo; el ejemplo vive en su propio proyecto.
@@ -75,7 +79,7 @@ ORCID: Fernando Borrás Rocher [0000-0002-5519-4573](https://orcid.org/0000-0002
 
 ## Cómo citar
 
-Borrás Rocher, F. y López-Pineda, A. (2026). *PRISMIA* (v2.0.0) [Software]. DOI: [10.5281/zenodo.23144807](https://doi.org/10.5281/zenodo.23144807)
+Borrás Rocher, F. y López-Pineda, A. (2026). *PRISMIA* (v2.0.1) [Software]. DOI: [10.5281/zenodo.23144807](https://doi.org/10.5281/zenodo.23144807)
 
 ## Licencia
 

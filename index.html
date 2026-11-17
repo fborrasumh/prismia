@@ -2893,6 +2893,7 @@ Object.assign(D, {
 "src.dupfq": ["«{0}» es idéntico a un fichero importado el {1} ({2} registros). Importarlo otra vez inflaría los duplicados del diagrama PRISMA.", "“{0}” is identical to a file imported on {1} ({2} records). Importing it again would inflate the PRISMA duplicates.", "«{0}» é idêntico a um ficheiro importado em {1} ({2} registos). Importá-lo outra vez inflacionaria os duplicados do diagrama PRISMA."],
 "src.dupfgo": ["Importar de todos modos", "Import anyway", "Importar mesmo assim"],
 "src.pdfia": ["PDF transcrito por IA", "PDF transcribed by AI", "PDF transcrito por IA"],
+"r.unread": ["PubMed devolvió {0} PMID que no se pudieron leer: {1}", "PubMed returned {0} PMIDs that could not be read: {1}", "O PubMed devolveu {0} PMID que não foi possível ler: {1}"],
 "r.omit": ["{0} ya estaban en el proyecto y no se añadieron.", "{0} were already in the project and were not added.", "{0} já estavam no projeto e não foram acrescentados."],
 "r.trans": ["Transcripción", "Transcription", "Transcrição"],
 "tb.search": ["Buscar por título, autor, DOI o año", "Search by title, author, DOI or year", "Pesquisar por título, autor, DOI ou ano"],
@@ -3406,7 +3407,7 @@ function demoReply(phase, role, ctx) {
 /* ══ Estado, proyectos y almacenamiento. Cada proyecto vive en IndexedDB bajo «proj_<id>» y sus textos completos bajo
       «txt_<id>_<registro>», de modo que los textos de un proyecto nunca se mezclan con los de otro. La lista de proyectos
       (con la papelera) está en «projlist» y las copias de seguridad en «bak_<id>». ══ */
-const VERSION = '2.0.0';
+const VERSION = '2.0.1';
 const TPL0 = [
   {key: 'study_design', desc: 'Diseño del estudio: ensayo aleatorizado, ensayo no aleatorizado, cohortes, casos y controles, transversal, precisión diagnóstica u otro'},
   {key: 'country', desc: 'País o países donde se realizó'},
@@ -3656,14 +3657,22 @@ async function searchPubMed(q, max, onTick, desde) {
   for (let i = 0; i < ids.length && !STOP; i += 150) {
     onTick && onTick(i, ids.length);
     const doc = new DOMParser().parseFromString(await (await jsonOk(`${base}efetch.fcgi?db=pubmed&retmode=xml&id=${ids.slice(i, i + 150).join(',')}`)).text(), 'text/xml');
+    const resumen = n => [...n.querySelectorAll('Abstract > AbstractText')].map(x => (x.getAttribute('Label') ? x.getAttribute('Label') + ': ' : '') + x.textContent).join(' ');
+    const autores = l => [...l].slice(0, 6).map(x => ((x.querySelector('LastName')?.textContent || x.querySelector('CollectiveName')?.textContent || '') + ' ' + (x.querySelector('Initials')?.textContent || '')).trim());
+    const doiDe = n => [...n.querySelectorAll('ArticleId')].find(x => x.getAttribute('IdType') === 'doi')?.textContent || [...n.querySelectorAll('ELocationID')].find(x => x.getAttribute('EIdType') === 'doi')?.textContent || '';
     doc.querySelectorAll('PubmedArticle').forEach(a => {
-      const ab = [...a.querySelectorAll('Abstract > AbstractText')].map(x => (x.getAttribute('Label') ? x.getAttribute('Label') + ': ' : '') + x.textContent).join(' ');
       const yr = a.querySelector('JournalIssue > PubDate > Year')?.textContent || (a.querySelector('JournalIssue > PubDate > MedlineDate')?.textContent.match(/\d{4}/) || [''])[0];
-      const doi = [...a.querySelectorAll('ArticleId')].find(x => x.getAttribute('IdType') === 'doi')?.textContent || '';
-      out.push({title: a.querySelector('ArticleTitle')?.textContent || '', abstract: ab, year: yr, journal: a.querySelector('Journal > Title')?.textContent || '', doi, pmid: a.querySelector('MedlineCitation > PMID')?.textContent || '', authors: [...a.querySelectorAll('Author')].slice(0, 6).map(x => (x.querySelector('LastName')?.textContent || '') + ' ' + (x.querySelector('Initials')?.textContent || ''))});
+      out.push({title: a.querySelector('ArticleTitle')?.textContent || a.querySelector('VernacularTitle')?.textContent || '', abstract: resumen(a), year: yr, journal: a.querySelector('Journal > Title')?.textContent || '', doi: doiDe(a), pmid: a.querySelector('MedlineCitation > PMID')?.textContent || '', authors: autores(a.querySelectorAll('AuthorList > Author'))});
+    });
+    /* documentos de NCBI Bookshelf (informes HTA, revisiones de agencias): PubMed los cuenta y E-utilities los devuelve con otra estructura */
+    doc.querySelectorAll('PubmedBookArticle').forEach(a => {
+      const bd = a.querySelector('BookDocument'), bk = bd?.querySelector('Book');
+      out.push({title: bd?.querySelector(':scope > ArticleTitle')?.textContent || bk?.querySelector('BookTitle')?.textContent || '', abstract: bd ? resumen(bd) : '', year: bk?.querySelector('PubDate > Year')?.textContent || '', journal: [bk?.querySelector('CollectionTitle')?.textContent, bk?.querySelector('Publisher > PublisherName')?.textContent].filter(Boolean).join(' · ') || 'NCBI Bookshelf', doi: doiDe(a), pmid: bd?.querySelector(':scope > PMID')?.textContent || '', authors: autores((bd?.querySelector(':scope > AuthorList') || bk?.querySelector('AuthorList'))?.querySelectorAll('Author') || [])});
     });
     await sleep(380);
   }
+  const leidos = new Set(out.map(x => x.pmid)), sinLeer = ids.filter(i => !leidos.has(i));
+  if (sinLeer.length) log(t('r.unread', sinLeer.length, sinLeer.slice(0, 20).join(', ')), true);
   return {out, total: +s.esearchresult?.count || ids.length};
 }
 async function searchOpenAlex(q, max, onTick, desde) {
